@@ -14,4 +14,11 @@ public class Rating {
     public String getRatingMovie() {
         return ratingMovie;
     }
+
+    @Override
+    public String toString() {
+        return "Rating{" +
+                "ratingMovie='" + ratingMovie + '\'' +
+                '}';
+    }
 }
