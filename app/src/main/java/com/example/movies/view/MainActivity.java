@@ -1,28 +1,18 @@
 package com.example.movies.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.recyclerview.widget.GridLayoutManager;
 
-import com.example.movies.R;
 import com.example.movies.adapter.MoviesAdapter;
-import com.example.movies.api.ApiFactory;
 import com.example.movies.databinding.ActivityMainBinding;
 import com.example.movies.pojo.Movie;
-import com.example.movies.pojo.MovieResponse;
 import com.example.movies.viewmodel.MainViewModel;
 
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -49,5 +39,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         mainViewModel.loadMovies();
+
+        moviesAdapter.setOnReachEndListener(new MoviesAdapter.onReachEndListener() {
+            @Override
+            public void onReachEnd() {
+                mainViewModel.loadMovies();
+            }
+        });
     }
 }
