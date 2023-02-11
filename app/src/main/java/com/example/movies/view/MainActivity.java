@@ -38,7 +38,18 @@ public class MainActivity extends AppCompatActivity {
                 moviesAdapter.setMovies(movies);
             }
         });
-        mainViewModel.loadMovies();
+
+        mainViewModel.getIsLoading().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(Boolean loading) {
+
+                if (loading){
+                    binding.progressBarLoading.setVisibility(View.VISIBLE);
+                } else{
+                    binding.progressBarLoading.setVisibility(View.GONE);
+                }
+            }
+        });
 
         moviesAdapter.setOnReachEndListener(new MoviesAdapter.onReachEndListener() {
             @Override
