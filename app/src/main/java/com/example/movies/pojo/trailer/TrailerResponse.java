@@ -8,8 +8,8 @@ public class TrailerResponse implements Serializable {
     @SerializedName("videos")
     private TrailerList trailerList;
 
-    public TrailerResponse(TrailerList videos) {
-        this.trailerList = videos;
+    public TrailerResponse(TrailerList trailerList) {
+        this.trailerList = trailerList;
     }
 
     public TrailerList getTrailerList() {
