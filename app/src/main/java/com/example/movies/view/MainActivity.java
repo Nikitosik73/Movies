@@ -1,5 +1,6 @@
 package com.example.movies.view;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -43,9 +44,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onChanged(Boolean loading) {
 
-                if (loading){
+                if (loading) {
                     binding.progressBarLoading.setVisibility(View.VISIBLE);
-                } else{
+                } else {
                     binding.progressBarLoading.setVisibility(View.GONE);
                 }
             }
@@ -55,6 +56,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onReachEnd() {
                 mainViewModel.loadMovies();
+            }
+        });
+
+        moviesAdapter.setOnClickMovieListener(new MoviesAdapter.onClickMovieListener() {
+            @Override
+            public void onClick(Movie movie) {
+                Intent intent = MovieDetailActivity.newIntent(
+                        MainActivity.this,
+                        movie
+                );
+                startActivity(intent);
             }
         });
     }
