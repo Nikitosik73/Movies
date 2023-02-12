@@ -12,6 +12,7 @@ import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.example.movies.R;
+import com.example.movies.adapter.TrailerAdapter;
 import com.example.movies.api.ApiFactory;
 import com.example.movies.databinding.ActivityMovieDetailBinding;
 import com.example.movies.pojo.movie.Movie;
@@ -35,6 +36,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private ActivityMovieDetailBinding binding;
 
+    private TrailerAdapter trailerAdapter = new TrailerAdapter();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -43,6 +46,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
+
+        binding.recyclerViewTrailer.setAdapter(trailerAdapter);
 
         Movie movie = (Movie) getIntent().getSerializableExtra(EXTRA_MOVIE);
 
@@ -66,7 +71,7 @@ public class MovieDetailActivity extends AppCompatActivity {
         movieDetailViewModel.getTrailers().observe(this, new Observer<List<Trailer>>() {
             @Override
             public void onChanged(List<Trailer> trailers) {
-                Log.d(TAG, trailers.toString());
+                trailerAdapter.setTrailers(trailers);
             }
         });
     }
