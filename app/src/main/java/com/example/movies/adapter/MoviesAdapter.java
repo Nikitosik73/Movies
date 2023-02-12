@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.movies.R;
-import com.example.movies.pojo.Movie;
+import com.example.movies.pojo.movie.Movie;
 
 import java.util.ArrayList;
 import java.util.List;

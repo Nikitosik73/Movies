@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import com.example.movies.adapter.MoviesAdapter;
 import com.example.movies.databinding.ActivityMainBinding;
-import com.example.movies.pojo.Movie;
+import com.example.movies.pojo.movie.Movie;
 import com.example.movies.viewmodel.MainViewModel;
 
 import java.util.List;

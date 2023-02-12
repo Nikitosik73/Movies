@@ -3,18 +3,16 @@ package com.example.movies.viewmodel;
 import android.app.Application;
 import android.util.Log;
 
-import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movies.api.ApiFactory;
-import com.example.movies.pojo.Movie;
-import com.example.movies.pojo.MovieResponse;
+import com.example.movies.pojo.movie.Movie;
+import com.example.movies.pojo.movie.MovieResponse;
 
 import java.util.List;
-import java.util.function.LongFunction;
 
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
