@@ -9,6 +9,8 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movies.api.ApiFactory;
+import com.example.movies.pojo.review.Review;
+import com.example.movies.pojo.review.ReviewResponse;
 import com.example.movies.pojo.trailer.Trailer;
 import com.example.movies.pojo.trailer.TrailerResponse;
 
@@ -37,6 +39,12 @@ public class MovieDetailViewModel extends AndroidViewModel {
         return trailers;
     }
 
+    private MutableLiveData<List<Review>> reviews = new MutableLiveData<>();
+
+    public LiveData<List<Review>> getReviews() {
+        return reviews;
+    }
+
     public void loadTrailer(int id){
 
         Disposable disposable = ApiFactory.apiService.loadTrailers(id)
@@ -57,6 +65,31 @@ public class MovieDetailViewModel extends AndroidViewModel {
                     @Override
                     public void accept(Throwable throwable) throws Throwable {
                         Log.d(TAG, trailers.toString());
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    public void loadReview(int movieId){
+
+        Disposable disposable = ApiFactory.apiService.loadReviews(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(new Function<ReviewResponse, List<Review>>() {
+                    @Override
+                    public List<Review> apply(ReviewResponse reviewResponse) throws Throwable {
+                        return reviewResponse.getReviews();
+                    }
+                })
+                .subscribe(new Consumer<List<Review>>() {
+                    @Override
+                    public void accept(List<Review> reviewsList) throws Throwable {
+                        reviews.setValue(reviewsList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG, throwable.toString());
                     }
                 });
         compositeDisposable.add(disposable);

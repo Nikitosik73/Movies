@@ -15,20 +15,20 @@
             android:id="@+id/imageViewPoster"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contentDescription="@null"
-            tools:src="@tools:sample/avatars"
             android:adjustViewBounds="true"
-            app:layout_constraintTop_toTopOf="parent"/>
+            android:contentDescription="@null"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:src="@tools:sample/avatars" />
 
         <TextView
             android:id="@+id/textViewTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_black"
-            android:layout_marginStart="8dp"
-            android:textSize="16sp"
             android:textColor="@color/black"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/imageViewPoster"
             tools:text="@string/title_movie" />
 
@@ -36,11 +36,11 @@
             android:id="@+id/textViewYear"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_black"
-            android:layout_marginStart="8dp"
-            android:textSize="16sp"
             android:textColor="@color/orange"
+            android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
             tools:text="@string/year" />
 
@@ -48,9 +48,9 @@
             android:id="@+id/textViewDescription"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:fontFamily="@font/inter_black"
-            android:layout_marginStart="8dp"
             android:textSize="16sp"
             app:layout_constraintTop_toBottomOf="@+id/textViewYear"
             tools:text="@string/description" />
@@ -61,9 +61,10 @@
             android:layout_height="wrap_content"
             android:nestedScrollingEnabled="false"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            tools:listitem="@layout/trailer_item"
-            tools:itemCount="2"
-            app:layout_constraintTop_toBottomOf="@id/textViewDescription"/>
+            app:layout_constraintTop_toBottomOf="@id/textViewDescription"
+            tools:itemCount="1"
+            tools:listitem="@layout/trailer_item" />
+        
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

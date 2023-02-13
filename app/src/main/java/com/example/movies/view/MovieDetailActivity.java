@@ -14,18 +14,13 @@ import android.view.View;
 import com.bumptech.glide.Glide;
 import com.example.movies.R;
 import com.example.movies.adapter.TrailerAdapter;
-import com.example.movies.api.ApiFactory;
 import com.example.movies.databinding.ActivityMovieDetailBinding;
 import com.example.movies.pojo.movie.Movie;
+import com.example.movies.pojo.review.Review;
 import com.example.movies.pojo.trailer.Trailer;
-import com.example.movies.pojo.trailer.TrailerResponse;
 import com.example.movies.viewmodel.MovieDetailViewModel;
 
 import java.util.List;
-
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.functions.Consumer;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -84,6 +79,17 @@ public class MovieDetailActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        movieDetailViewModel.getReviews().observe(this, new Observer<List<Review>>() {
+            @Override
+            public void onChanged(List<Review> reviews) {
+                Log.d(TAG, reviews.toString());
+            }
+        });
+
+        movieDetailViewModel.loadReview(movie.getId());
+
+
     }
 
     public static Intent newIntent(Context context, Movie movie){

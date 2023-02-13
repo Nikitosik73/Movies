@@ -3,4 +3,6 @@
     <string name="title_movie">Название фильма: %s</string>
     <string name="description">Описание: \n%s</string>
     <string name="year">Год выхода: %s</string>
+    <string name="author">Автор: %s</string>
+    <string name="preview">Отызыв:\n%s</string>
 </resources>
