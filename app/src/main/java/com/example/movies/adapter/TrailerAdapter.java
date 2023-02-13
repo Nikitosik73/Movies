@@ -23,6 +23,12 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
         notifyDataSetChanged();
     }
 
+    private onClickTrailerListener onClickTrailerListener;
+
+    public void setOnClickTrailerListener(TrailerAdapter.onClickTrailerListener onClickTrailerListener) {
+        this.onClickTrailerListener = onClickTrailerListener;
+    }
+
     @NonNull
     @Override
     public TrailerViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -39,11 +45,25 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.TrailerV
 
         Trailer trailer = trailers.get(position);
         holder.textViewTrailer.setText(trailer.getName());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onClickTrailerListener != null) {
+                    onClickTrailerListener.onClickTrailer(trailer);
+                }
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         return trailers.size();
+    }
+
+    public interface onClickTrailerListener {
+
+        void onClickTrailer(Trailer trailer);
     }
 
     public static class TrailerViewHolder extends RecyclerView.ViewHolder{

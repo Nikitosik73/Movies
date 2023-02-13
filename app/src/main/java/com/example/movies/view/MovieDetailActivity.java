@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -72,6 +73,15 @@ public class MovieDetailActivity extends AppCompatActivity {
             @Override
             public void onChanged(List<Trailer> trailers) {
                 trailerAdapter.setTrailers(trailers);
+            }
+        });
+
+        trailerAdapter.setOnClickTrailerListener(new TrailerAdapter.onClickTrailerListener() {
+            @Override
+            public void onClickTrailer(Trailer trailer) {
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(Uri.parse(trailer.getUrl()));
+                startActivity(intent);
             }
         });
     }
