@@ -18,7 +18,6 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
-
     private MoviesAdapter moviesAdapter = new MoviesAdapter();
     private MainViewModel mainViewModel;
 
@@ -28,6 +27,9 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
+
+        Intent intent = FavoriteMovieActivity.newIntent(this);
+        startActivity(intent);
 
         binding.recyclerViewMovie.setAdapter(moviesAdapter);
 
