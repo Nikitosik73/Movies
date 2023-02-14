@@ -1,11 +1,13 @@
 package com.example.movies.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,8 +43,6 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private ReviewAdapter reviewAdapter = new ReviewAdapter();
 
-    private MovieDatabase movieDatabase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,8 +51,6 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
-
-        movieDatabase = MovieDatabase.getInstance(getApplication());
 
         binding.recyclerViewTrailer.setAdapter(trailerAdapter);
         binding.recyclerViewReview.setAdapter(reviewAdapter);
@@ -101,9 +99,36 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         movieDetailViewModel.loadReview(movie.getId());
 
-        movieDatabase.movieDao().insertMovie(movie)
-                .subscribeOn(Schedulers.io())
-                .subscribe();
+        Drawable starOff = ContextCompat.getDrawable(
+                MovieDetailActivity.this,
+                android.R.drawable.star_big_off
+        );
+        Drawable starOn = ContextCompat.getDrawable(
+                MovieDetailActivity.this,
+                android.R.drawable.star_big_on
+        );
+        movieDetailViewModel.getFavoriteMovie(movie.getId()).observe(this, new Observer<Movie>() {
+            @Override
+            public void onChanged(Movie movieFromDB) {
+                if (movieFromDB == null){
+                    binding.imageViewStar.setImageDrawable(starOff);
+                    binding.imageViewStar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            movieDetailViewModel.insertMovie(movie);
+                        }
+                    });
+                } else {
+                    binding.imageViewStar.setImageDrawable(starOn);
+                    binding.imageViewStar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            movieDetailViewModel.removeMovie(movie.getId());
+                        }
+                    });
+                }
+            }
+        });
     }
 
     public static Intent newIntent(Context context, Movie movie){

@@ -3,12 +3,15 @@ package com.example.movies.viewmodel;
 import android.app.Application;
 import android.util.Log;
 
+import androidx.annotation.LongDef;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
 import com.example.movies.api.ApiFactory;
+import com.example.movies.data.MovieDatabase;
+import com.example.movies.pojo.movie.Movie;
 import com.example.movies.pojo.review.Review;
 import com.example.movies.pojo.review.ReviewResponse;
 import com.example.movies.pojo.trailer.Trailer;
@@ -19,14 +22,18 @@ import java.util.List;
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.functions.Action;
 import io.reactivex.rxjava3.functions.Consumer;
 import io.reactivex.rxjava3.functions.Function;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MovieDetailViewModel extends AndroidViewModel {
 
+    private MovieDatabase movieDatabase;
+
     public MovieDetailViewModel(@NonNull Application application) {
         super(application);
+        movieDatabase = MovieDatabase.getInstance(getApplication());
     }
 
     private static final String TAG = "MovieDetailViewModel";
@@ -43,6 +50,10 @@ public class MovieDetailViewModel extends AndroidViewModel {
 
     public LiveData<List<Review>> getReviews() {
         return reviews;
+    }
+
+    public LiveData<Movie> getFavoriteMovie(int movieId) {
+        return movieDatabase.movieDao().getFavoriteMovie(movieId);
     }
 
     public void loadTrailer(int id){
@@ -85,6 +96,42 @@ public class MovieDetailViewModel extends AndroidViewModel {
                     @Override
                     public void accept(List<Review> reviewsList) throws Throwable {
                         reviews.setValue(reviewsList);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG, throwable.toString());
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    public void insertMovie(Movie movie){
+        Disposable disposable = movieDatabase.movieDao().insertMovie(movie)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        Log.d(TAG, "AddMovie: " + movie.getId());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Throwable {
+                        Log.d(TAG, throwable.toString());
+                    }
+                });
+        compositeDisposable.add(disposable);
+    }
+
+    public void removeMovie(int movieId){
+        Disposable disposable = movieDatabase.movieDao().removeMovie(movieId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Action() {
+                    @Override
+                    public void run() throws Throwable {
+                        Log.d(TAG, "RemoveMovie: " + movieId);
                     }
                 }, new Consumer<Throwable>() {
                     @Override
