@@ -15,6 +15,7 @@ import com.bumptech.glide.Glide;
 import com.example.movies.R;
 import com.example.movies.adapter.ReviewAdapter;
 import com.example.movies.adapter.TrailerAdapter;
+import com.example.movies.data.MovieDatabase;
 import com.example.movies.databinding.ActivityMovieDetailBinding;
 import com.example.movies.pojo.movie.Movie;
 import com.example.movies.pojo.review.Review;
@@ -22,6 +23,9 @@ import com.example.movies.pojo.trailer.Trailer;
 import com.example.movies.viewmodel.MovieDetailViewModel;
 
 import java.util.List;
+
+import io.reactivex.rxjava3.core.Scheduler;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class MovieDetailActivity extends AppCompatActivity {
 
@@ -37,6 +41,8 @@ public class MovieDetailActivity extends AppCompatActivity {
 
     private ReviewAdapter reviewAdapter = new ReviewAdapter();
 
+    private MovieDatabase movieDatabase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +51,8 @@ public class MovieDetailActivity extends AppCompatActivity {
         setContentView(view);
 
         movieDetailViewModel = new ViewModelProvider(this).get(MovieDetailViewModel.class);
+
+        movieDatabase = MovieDatabase.getInstance(getApplication());
 
         binding.recyclerViewTrailer.setAdapter(trailerAdapter);
         binding.recyclerViewReview.setAdapter(reviewAdapter);
@@ -93,7 +101,9 @@ public class MovieDetailActivity extends AppCompatActivity {
 
         movieDetailViewModel.loadReview(movie.getId());
 
-
+        movieDatabase.movieDao().insertMovie(movie)
+                .subscribeOn(Schedulers.io())
+                .subscribe();
     }
 
     public static Intent newIntent(Context context, Movie movie){

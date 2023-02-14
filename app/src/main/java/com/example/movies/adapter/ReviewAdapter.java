@@ -1,6 +1,5 @@
 package com.example.movies.adapter;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movies.R;
 import com.example.movies.pojo.review.Review;
-import com.example.movies.pojo.trailer.Trailer;
 
 import java.util.ArrayList;
 import java.util.List;
