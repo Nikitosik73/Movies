@@ -1,4 +1,4 @@
-package com.example.movies.pojo;
+package com.example.movies.pojo.movie;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -15,5 +15,12 @@ public class MovieResponse {
 
     public List<Movie> getMovies() {
         return movies;
+    }
+
+    @Override
+    public String toString() {
+        return "MovieResponse{" +
+                "movies=" + movies +
+                '}';
     }
 }
